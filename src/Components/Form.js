@@ -19,7 +19,7 @@ class Form extends Component {
   };
 
   submit = (title, image, content) => {
-    axios.post("/new", { title, image, content }).then(() => {
+    axios.post("/api/addpost", { title, image, content }).then(() => {
       this.props.history.push("/dashboard");
     });
   };
