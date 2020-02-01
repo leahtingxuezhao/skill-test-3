@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  display: flex;
 }
 .landing-container {
   width: 100vw;
@@ -111,8 +112,34 @@ h1 {
 }
 
 .add-form-container {
-  width: 400px;
-  height: 400px;
-  background-color: yellow;
+  width: 800px;
+  height: 600px;
+  background-color: rgb(168, 211, 238);
   margin: auto;
+  border-radius: 20px;
+}
+
+#newPost {
+  font-size: 40px;
+  color: yellow;
+  font-weight: bold;
+  position: relative;
+  margin-top: 10px;
+}
+
+.uploadPic {
+  width: 300px;
+  height: 200px;
+}
+.formInput {
+  width: 350px;
+  height: 20px;
+}
+#postButton {
+  position: relative;
+  margin-top: 15px;
+  width: 50px;
+  height: 30px;
+  border-radius: 5px;
+  font-size: 15px;
 }

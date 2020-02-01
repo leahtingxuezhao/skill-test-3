@@ -28,7 +28,7 @@ app.post("/auth/logout", ctrl.logout);
 app.get("/auth/user", ctrl.getUser);
 
 //ADD POSTS ENDPOINTS
-app.post("/api/addpost", ctrl.add_post);
+app.post("/api/addpost", ctrl.addPost);
 
 massive(CONNECTION_STRING).then(db => {
   app.set("db", db);
