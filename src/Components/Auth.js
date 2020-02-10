@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
+import store from "../ducks/store";
+
 const emoji = require("/Users/dt/repos-2/devMountain/skill-check/skill-test-3/src/emoji.png");
 
 class Auth extends Component {
@@ -28,6 +30,11 @@ class Auth extends Component {
       .catch(err => {
         console.log(err);
       });
+    store.dispatch({
+      type: "GET_USER",
+      payload: this.state.username
+    });
+    console.log("store from auth", store.getState());
   };
 
   register = (username, password) => {
@@ -40,6 +47,11 @@ class Auth extends Component {
       .catch(err => {
         console.log(err);
       });
+    store.dispatch({
+      type: "GET_USER",
+      payload: this.state.username
+    });
+    console.log("store from auth", store.getState());
   };
 
   render() {
@@ -47,6 +59,7 @@ class Auth extends Component {
 
     console.log(username);
     console.log(password);
+
     return (
       <div className="landing-container">
         <div className="landing-box">

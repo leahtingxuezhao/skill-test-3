@@ -21,16 +21,18 @@ class Form extends Component {
   };
 
   submit = (title, image, content) => {
-    axios.post("/api/addPost", { title, image, content }).then(() => {
+    axios.post("/api/add_post", { title, image, content }).then(() => {
       this.props.history.push("/dashboard");
     });
   };
 
   render() {
     const { title, image, content } = this.state;
+    const { id } = this.props.user || "";
+    console.log(content);
     console.log(title);
     console.log(image);
-    console.log(content);
+
     return (
       <div className="add-form-container">
         <p id="newPost">NEW POST</p>

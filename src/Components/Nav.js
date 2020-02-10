@@ -9,6 +9,16 @@ class Nav extends Component {
     this.state = {};
   }
 
+  componentDidMount() {
+    console.log("this.props from nav :", this.props);
+    axios.get("/auth/user").then(res => {
+      this.props.dispatch({
+        type: "GET_USER",
+        payload: res.data.username
+      });
+    });
+  }
+
   render() {
     console.log(this.props);
     if (this.props.location.pathname === "/") {
@@ -16,7 +26,12 @@ class Nav extends Component {
     } else {
       return (
         <div className="nav-bar">
-          <img src="https://robohash.org/leah" alt="pic" id="profilePic"></img>
+          <img
+            src={`https://robohash.org/${this.props.user}`}
+            alt="pic"
+            id="profilePic"
+          ></img>
+          <p>{`Hi! ${this.props.user}`}</p>
           <div
             className="link"
             onClick={() => this.props.history.push("/dashboard")}
