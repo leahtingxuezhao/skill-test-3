@@ -1,5 +1,5 @@
 const bcrypt = require("bcryptjs");
-
+const cookie = require("cookie");
 module.exports = {
   register: async (req, res) => {
     console.log("hit register");
@@ -38,6 +38,7 @@ module.exports = {
     req.session.user = user[0];
 
     req.session.save();
+
     res.send(req.session);
   },
   logout: (req, res) => {
@@ -46,8 +47,9 @@ module.exports = {
   },
 
   getUser: (req, res) => {
-    console.log("hit getUser");
-    console.log(req.session.user);
+    // console.log("hit getUser", req);
+    // const parsedCookie = cookie.parse(req.headers.cookie);
+    // console.log("parsedCookie :", parsedCookie);
     if (req.session.user) {
       res.status(200).send(req.session.user);
     } else {
@@ -65,6 +67,7 @@ module.exports = {
   },
 
   getPost: (req, res) => {
+    console.log("get post id :", id);
     const db = req.app.get("db");
     const { id } = req.params;
     db.get_post(id).then(response => {
@@ -77,26 +80,31 @@ module.exports = {
     const db = req.app.get("db");
     const { search, myPost } = req.query;
     const { id } = req.params;
+
     if (myPost === "true" && search) {
-      db.filter_posts(search)
+      return db
+        .filter_posts(search)
         .then(results => {
           return res.status(200).send(results);
         })
         .catch(err => res.status(500).send(err));
     } else if (myPost === "false" && search) {
-      db.filter_not_my_posts([search, id])
+      return db
+        .filter_not_my_posts([search, id])
         .then(results => {
           return res.status(200).send(results);
         })
         .catch(err => res.status(500).send(err));
     } else if (myPost === "false") {
-      db.get_not_my_posts(id)
+      return db
+        .get_not_my_posts(id)
         .then(results => {
           return res.status(200).send(results);
         })
         .catch(err => res.status(500).send(err));
     } else {
-      db.get_posts()
+      return db
+        .get_posts()
         .then(results => {
           res.status(200).send(results);
         })

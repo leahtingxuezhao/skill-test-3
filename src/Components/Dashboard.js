@@ -1,4 +1,9 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import axios from "axios";
+
+import { getAllPosts } from "../ducks/reducer";
+import Post from "./Post";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -7,24 +12,61 @@ class Dashboard extends Component {
       id: "",
       search: "",
       myPost: true,
-      user: { id: "", username: "", img: "" }
+      user: { id: "", username: "", image: "" }
     };
   }
 
   componentDidMount() {
-    const { getPosts } = this.props;
-    getPosts();
+    axios
+      .get("/api/get_posts")
+      .then(res => {
+        const action = getAllPosts(res.data);
+        this.props.dispatch(action);
+        console.log("res", res);
+      })
+      .catch(err => {
+        console.log("err", err);
+      });
   }
 
   handleChange = ({ name, value }) => this.setState({ [name]: value });
+  resetFun = () => {
+    this.setState({
+      search: ""
+    });
+  };
 
   checkItem(e) {
     this.setState({ myPost: e.target.checked });
   }
 
+  renderPosts = () => {
+    console.log("render posts", this.props.posts);
+    return this.props.posts.map(element => <Post postInfo={element} />);
+  };
+
   render() {
-    return <div id="dashboard">Dashboard</div>;
+    console.log("search value", this.state.search);
+    return (
+      <div id="dashboard">
+        <div className="searchBox">
+          <input
+            name="search"
+            placeholder="Search by Title"
+            onChange={e => this.handleChange(e.target)}
+            value={this.state.search}
+          ></input>
+          <button onClick={() => this.resetFun()}>Reset</button>
+        </div>
+        {this.renderPosts()}
+      </div>
+    );
   }
 }
-
-export default Dashboard;
+Dashboard.mapStateToProps = state => {
+  console.log("state :", state);
+  return {
+    posts: state.reducer.posts
+  };
+};
+export default connect(Dashboard.mapStateToProps)(Dashboard);

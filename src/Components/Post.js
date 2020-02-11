@@ -7,7 +7,20 @@ class Post extends Component {
   }
 
   render() {
-    return <div>Post</div>;
+    console.log("this.props.postInfo", this.props.postInfo);
+    return (
+      <div className="postBox">
+        <div className="titleLetter">{this.props.postInfo.title}</div>
+        <div>
+          <div>by user {this.props.postInfo.user}</div>
+          <img
+            src={`https://robohash.org/${this.props.postInfo.user}`}
+            alt="pic"
+            className="postProfilePic"
+          ></img>
+        </div>
+      </div>
+    );
   }
 }
 

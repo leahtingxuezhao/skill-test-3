@@ -77,7 +77,7 @@ h1 {
 
 .nav-bar {
   height: 100vh;
-  width: 8vw;
+  width: 130px;
   position: relative;
   margin-left: 0px;
   background: linear-gradient(
@@ -142,4 +142,34 @@ h1 {
   height: 30px;
   border-radius: 5px;
   font-size: 15px;
+}
+
+.postBox {
+  display: flex;
+  justify-content: space-evenly;
+  background-color: lightcyan;
+  margin-top: 20px;
+  width: 70vw;
+  height: 120px;
+  margin-left: 100px;
+}
+
+.postProfilePic {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+
+.titleLetter {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 40px;
+}
+
+.searchBox {
+  margin-left: 100px;
+  margin-top: 50px;
+  width: 70vw;
+  height: 80px;
+  background-color: lightgray;
 }
