@@ -25,20 +25,12 @@ export const getAllPosts = allPosts => {
     payload: allPosts
   };
 };
-
-export function getPosts(search = "", myPost = true, id = "") {
-  const posts = axios
-    .get(`/api/get_posts/${id}?search=${search}&mypost=${myPost}`)
-    .then(results => {
-      return results.data;
-    })
-    .catch(err => console.log(err));
+export const getPosts = Posts => {
   return {
     type: GET_POSTS,
-    payload: posts
+    payload: Posts
   };
-}
-
+};
 export default function(state = initialState, action) {
   const { type, payload } = action;
 

@@ -77,11 +77,12 @@ module.exports = {
     const db = req.app.get("db");
     const { search, myPost } = req.query;
     const { id } = req.params;
+    console.log(req.query);
 
     if (myPost === "true" && search) {
-      return db
-        .filter_posts(search)
+      db.filter_posts(search)
         .then(results => {
+          console.log("results :", results);
           return res.status(200).send(results);
         })
         .catch(err => res.status(500).send(err));

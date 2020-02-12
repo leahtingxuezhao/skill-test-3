@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import axios from "axios";
 import { getUser } from "../ducks/reducer";
-import { getAllPosts } from "../ducks/reducer";
 import { getPosts } from "../ducks/reducer";
+import { getAllPosts } from "../ducks/reducer";
 import Post from "./Post";
 
 class Dashboard extends Component {
@@ -21,8 +21,7 @@ class Dashboard extends Component {
     axios
       .get("/api/get_posts")
       .then(res => {
-        const action = getAllPosts(res.data);
-        this.props.dispatch(action);
+        this.props.getAllPosts(res.data);
         console.log("res", res);
       })
       .catch(err => {
@@ -32,8 +31,7 @@ class Dashboard extends Component {
     axios
       .get("/auth/user")
       .then(res => {
-        const action1 = getUser(res.data);
-        this.props.dispatch(action1);
+        this.props.getUser(res.data);
         console.log("Hello hello hello hello hello res.data :", res.data);
         this.setState({ id: res.data.id });
       })
@@ -41,6 +39,15 @@ class Dashboard extends Component {
         console.log("err", err);
       });
   }
+
+  getPosts = (search, myPost, id) => {
+    axios
+      .get(`/api/get_posts/${id}?search=${search}&myPost=${myPost}`)
+      .then(res => {
+        this.props.getPosts(res.data);
+      })
+      .catch(err => console.log(err));
+  };
 
   handleChange = ({ name, value }) => this.setState({ [name]: value });
   resetFun = () => {
@@ -75,7 +82,7 @@ class Dashboard extends Component {
           <button
             onClick={e => {
               if (id) {
-                getPosts(search, myPost, id);
+                this.getPosts(search, myPost, id);
               }
             }}
           >
@@ -100,4 +107,8 @@ Dashboard.mapStateToProps = state => {
     posts: state.reducer.posts
   };
 };
-export default connect(Dashboard.mapStateToProps)(Dashboard);
+export default connect(Dashboard.mapStateToProps, {
+  getPosts,
+  getUser,
+  getAllPosts
+})(Dashboard);
