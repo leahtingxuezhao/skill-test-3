@@ -47,9 +47,6 @@ module.exports = {
   },
 
   getUser: (req, res) => {
-    // console.log("hit getUser", req);
-    // const parsedCookie = cookie.parse(req.headers.cookie);
-    // console.log("parsedCookie :", parsedCookie);
     if (req.session.user) {
       res.status(200).send(req.session.user);
     } else {
@@ -67,9 +64,9 @@ module.exports = {
   },
 
   getPost: (req, res) => {
-    console.log("get post id :", id);
     const db = req.app.get("db");
     const { id } = req.params;
+    console.log("get post id : \n\n\n\n", id, "\n\n\n");
     db.get_post(id).then(response => {
       const data = response[0];
       res.status(200).send(data);

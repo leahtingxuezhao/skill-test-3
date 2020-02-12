@@ -1,18 +1,19 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import axios from "axios";
-
+import { getUser } from "../ducks/reducer";
 import { getAllPosts } from "../ducks/reducer";
+import { getPosts } from "../ducks/reducer";
 import Post from "./Post";
 
 class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: "",
       search: "",
       myPost: true,
-      user: { id: "", username: "", image: "" }
+      id: 0,
+      post: []
     };
   }
 
@@ -23,6 +24,18 @@ class Dashboard extends Component {
         const action = getAllPosts(res.data);
         this.props.dispatch(action);
         console.log("res", res);
+      })
+      .catch(err => {
+        console.log("err", err);
+      });
+
+    axios
+      .get("/auth/user")
+      .then(res => {
+        const action1 = getUser(res.data);
+        this.props.dispatch(action1);
+        console.log("Hello hello hello hello hello res.data :", res.data);
+        this.setState({ id: res.data.id });
       })
       .catch(err => {
         console.log("err", err);
@@ -46,7 +59,10 @@ class Dashboard extends Component {
   };
 
   render() {
-    console.log("search value", this.state.search);
+    const { id, search, myPost } = this.state;
+    console.log("search value", search);
+    console.log("this.state.myPost :", myPost);
+    console.log("this.state.user.id :", id);
     return (
       <div id="dashboard">
         <div className="searchBox">
@@ -56,7 +72,22 @@ class Dashboard extends Component {
             onChange={e => this.handleChange(e.target)}
             value={this.state.search}
           ></input>
+          <button
+            onClick={e => {
+              if (id) {
+                getPosts(search, myPost, id);
+              }
+            }}
+          >
+            Search
+          </button>
           <button onClick={() => this.resetFun()}>Reset</button>
+          <div>My Post</div>
+          <input
+            type="checkbox"
+            onChange={e => this.checkItem(e)}
+            checked={this.state.myPost}
+          />
         </div>
         {this.renderPosts()}
       </div>

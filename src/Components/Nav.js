@@ -14,24 +14,24 @@ class Nav extends Component {
     axios.get("/auth/user").then(res => {
       this.props.dispatch({
         type: "GET_USER",
-        payload: res.data.username
+        payload: res.data
       });
     });
   }
 
   render() {
-    console.log(this.props);
+    console.log(this.props.user);
     if (this.props.location.pathname === "/") {
       return <div></div>;
     } else {
       return (
         <div className="nav-bar">
           <img
-            src={`https://robohash.org/${this.props.user}`}
+            src={`https://robohash.org/${this.props.user.username}`}
             alt="pic"
             id="profilePic"
           ></img>
-          <p>{`Hi! ${this.props.user}`}</p>
+          <p>{`Hi! ${this.props.user.username}`}</p>
           <div
             className="link"
             onClick={() => this.props.history.push("/dashboard")}
