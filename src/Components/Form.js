@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+
 import axios from "axios";
 const uploadPic =
   "https://blog.hubspot.com/hubfs/types-of-image-files-extensions.jpg";
@@ -9,26 +10,27 @@ class Form extends Component {
     this.state = {
       title: "",
       image: "",
-      content: ""
+      content: "",
     };
   }
 
-  handleChange = e => {
+  handleChange = (e) => {
     const { name, value } = e.target;
     this.setState({
-      [name]: value
+      [name]: value,
     });
   };
 
-  submit = (title, image, content) => {
-    axios.post("/api/add_post", { title, image, content }).then(() => {
-      this.props.history.push("/dashboard");
-    });
+  submit = () => {
+    const { title, image, content } = this.state;
+    axios
+      .post("/api/add_post", { title, image, content })
+      .then(() => this.props.history.push("/dashboard"));
   };
 
   render() {
     const { title, image, content } = this.state;
-    const { id } = this.props.user || "";
+
     console.log(content);
     console.log(title);
     console.log(image);
@@ -44,27 +46,24 @@ class Form extends Component {
             className="formInput"
             name="title"
             value={title}
-            onChange={e => this.handleChange(e)}
+            onChange={(e) => this.handleChange(e)}
           ></input>
           <p>Image URL:</p>
           <input
             className="formInput"
             name="image"
             value={image}
-            onChange={e => this.handleChange(e)}
+            onChange={(e) => this.handleChange(e)}
           ></input>
           <p>Content:</p>
           <input
             className="formInput"
             name="content"
             value={content}
-            onChange={e => this.handleChange(e)}
+            onChange={(e) => this.handleChange(e)}
           ></input>
         </div>
-        <button
-          id="postButton"
-          onClick={() => this.submit(title, image, content)}
-        >
+        <button id="postButton" onClick={() => this.submit()}>
           Post
         </button>
       </div>

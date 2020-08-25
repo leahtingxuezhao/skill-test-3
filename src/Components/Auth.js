@@ -1,6 +1,9 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import axios from "axios";
 import store from "../ducks/store";
+import { getUser, userLoggedOut } from "../ducks/userReducer";
+import { getMyPost, getPosts } from "../ducks/postReducer";
 
 const emoji = require("/Users/dt/repos-2/devMountain/skill-check/skill-test-3/src/emoji.png");
 
@@ -9,49 +12,41 @@ class Auth extends Component {
     super();
     this.state = {
       username: "",
-      password: ""
+      password: "",
     };
   }
 
-  handleChange = e => {
+  handleChange = (e) => {
     const { name, value } = e.target;
     this.setState({
-      [name]: value
+      [name]: value,
     });
   };
 
-  login = (username, password) => {
+  login = () => {
+    const { username, password } = this.state;
     axios
       .post("/auth/login", { username, password })
-      .then(res => {
-        console.log(res);
+      .then((res) => {
+        console.log(res.data);
+        this.props.getUser(res.data);
         this.props.history.push("/dashboard");
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
-    store.dispatch({
-      type: "GET_USER",
-      payload: this.state.username
-    });
-    console.log("store from auth", store.getState());
   };
 
   register = (username, password) => {
     axios
       .post("/auth/register", { username, password })
-      .then(res => {
-        console.log(res);
+      .then((res) => {
+        this.props.getUser(res.data);
         this.props.history.push("/dashboard");
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
-    store.dispatch({
-      type: "GET_USER",
-      payload: this.state.username
-    });
-    console.log("store from auth", store.getState());
   };
 
   render() {
@@ -74,7 +69,7 @@ class Auth extends Component {
               <input
                 name="username"
                 value={this.state.username}
-                onChange={e => this.handleChange(e)}
+                onChange={(e) => this.handleChange(e)}
                 className="input"
               />
             </div>
@@ -86,7 +81,7 @@ class Auth extends Component {
               <input
                 name="password"
                 value={this.state.password}
-                onChange={e => this.handleChange(e)}
+                onChange={(e) => this.handleChange(e)}
                 className="input"
               />
             </div>
@@ -109,4 +104,13 @@ class Auth extends Component {
   }
 }
 
-export default Auth;
+function mapStateToProps(state) {
+  return {};
+}
+
+export default connect(mapStateToProps, {
+  getUser,
+  userLoggedOut,
+  getMyPost,
+  getPosts,
+})(Auth);

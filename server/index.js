@@ -17,10 +17,22 @@ app.use(
     saveUninitialized: true,
     secret: SESSION_SECRET,
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24 * 365
-    }
+      maxAge: 1000 * 60 * 60 * 24 * 365,
+    },
   })
 );
+
+massive(CONNECTION_STRING)
+  .then((db) => {
+    app.set("db", db);
+    console.log("DB connected");
+    app.listen(SERVER_PORT, () =>
+      console.log(`Server running on ${SERVER_PORT}`)
+    );
+  })
+  .catch((e) => {
+    console.log("e :", e);
+  });
 
 // AUTH ENDPOINTS
 app.post("/auth/register", ctrl.register);
@@ -31,17 +43,4 @@ app.get("/auth/user", ctrl.getUser);
 //ADD POSTS ENDPOINTS
 app.post("/api/add_post", ctrl.addPost);
 app.get("/api/get_posts", ctrl.getPosts);
-app.get("/api/get_posts/:id", ctrl.getPosts);
 app.get("/api/get_post/:id", ctrl.getPost);
-
-massive(CONNECTION_STRING)
-  .then(db => {
-    app.set("db", db);
-    console.log("DB connected");
-    app.listen(SERVER_PORT, () =>
-      console.log(`Server running on ${SERVER_PORT}`)
-    );
-  })
-  .catch(e => {
-    console.log("e :", e);
-  });

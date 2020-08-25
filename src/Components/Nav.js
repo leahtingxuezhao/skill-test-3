@@ -9,18 +9,8 @@ class Nav extends Component {
     this.state = {};
   }
 
-  componentDidMount() {
-    console.log("this.props from nav :", this.props);
-    axios.get("/auth/user").then(res => {
-      this.props.dispatch({
-        type: "GET_USER",
-        payload: res.data
-      });
-    });
-  }
-
   render() {
-    console.log(this.props.user);
+    console.log("nav bar username", this.props.user.username);
     if (this.props.location.pathname === "/") {
       return <div></div>;
     } else {
@@ -31,7 +21,7 @@ class Nav extends Component {
             alt="pic"
             id="profilePic"
           ></img>
-          <p>{`Hi! ${this.props.user.username}`}</p>
+          <h3>{`Hello! ${this.props.user.username}`}</h3>
           <div
             className="link"
             onClick={() => this.props.history.push("/dashboard")}
@@ -58,6 +48,6 @@ class Nav extends Component {
 }
 
 function mapStateToProps(state) {
-  return { user: state.reducer.user };
+  return { user: state.userReducer.user };
 }
 export default connect(mapStateToProps)(withRouter(Nav));
